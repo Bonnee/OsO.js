@@ -6,7 +6,7 @@ It also features a web control panel that shows all the informations about the d
 
 iot.js uses the following technologies:
 * Node.js (For the backend)
-..* mysql module
-..* ws module
+  * mysql module
+  * ws module
 * Bootstrap (For the frontend)
 * jQuery
