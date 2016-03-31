@@ -6,27 +6,31 @@ var db = require('mysql');
 var sv = new require('./socket.js').server
 var server = new sv(sockPort);
 
-server.on('connection', function (ws) {
-    console.log('Connection from: ' + ws._socket.remoteAddress + ':' + ws._socket.remotePort);
+server.on('connection', function(ws) {
+  var address = ws._socket.remoteAddress + ':' + ws._socket.remotePort;
+console.log('Connection from: ' + address);
 
-    ws.on('data', function (message) {
-        console.log(ws._socket.remoteAddress + ':' + ws._socket.remotePort + ': ' + message);
-        if (message == 'levHistory') {
-            send(ws, JSON.stringify(readFile(logPath)), 'req');
-        }
-    });
+  ws.on('message', function(message) {
+    message = JSON.parse(message);
 
-    ws.on('close', function close() {
-        console.log(ws._socket.remoteAddress + ': ' + ws._socket.remotePort + 'disconnected.');
-    });
-
-    function send(connection, data, id) {
-        var pkt = {
-            'id': id
-            , 'data': data
-        }
-        connection.send(JSON.stringify(pkt));
+    if (message.id == 'hello') {
+      console.log('Device is: ' + message.data);
+    } else {
+      console.log(address + ': ' + message.data);
     }
+  });
+
+  ws.on('close', function close() {
+    console.log(address + ' has disconnected.');
+  });
+
+  function send(connection, data, id) {
+    var pkt = {
+      'id': id,
+      'data': data
+    }
+    connection.send(JSON.stringify(pkt));
+  }
 });
 
 
