@@ -1,12 +1,12 @@
-# iot.js
-iot is a simple server aimed to host and manage IoT enabled devices.
-It uses WebSockets to communicate with the devices and stores all their data in a mysql database.
+# Ohm sweet Ohm
+OsO.js is a simple server aimed to centralize and manage IoT enabled devices.
+OsO.js uses WebSockets to communicate with the devices and stores all their data in a MySQL database.
 
-It also features a web control panel that shows all the informations about the devices connected, in real time.
+It also features a web control panel that shows all the data about the devices connected, in real time.
 
-iot.js uses the following technologies:
+OsO.js is based upon the following technologies:
 * Node.js (For the backend)
-  * mysql module
-  * ws module
+  * mysql
+  * ws
 * Bootstrap (For the frontend)
 * jQuery
