@@ -3,7 +3,8 @@ process.stdout.write("Starting server...");
 var sockPort = 10611;
 
 var db = require('mysql');
-var server = new require('./socket.js').server(sockPort);
+var sv = new require('./socket.js').server
+var server = new sv(sockPort);
 
 server.on('connection', function (ws) {
     console.log('Connection from: ' + ws._socket.remoteAddress + ':' + ws._socket.remotePort);
