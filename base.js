@@ -7,13 +7,14 @@ db.once('open', function() {
   console.log('Connected to DB');
 });
 
-var deviceSchema = new db.Schema({
+var schema = new db.Schema({
     _id: { type: String, lowercase: true },
     name: String,
     description: String,
     location: String,
     dateAdd: { type: Date, default: Date.now },
-    settings: [{ name: String, value: String }]
-});
+    settings: [Schema.Types.Mixed],
+    data: [Schema.Types.Mixed]
+}, {strict: false});
 
-var Device = mongoose.model('Device', deviceSchema);
+var oso = mongoose.model('oso', schema);
