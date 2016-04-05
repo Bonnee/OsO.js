@@ -1,4 +1,11 @@
-var db = require('mongoose');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/oso');
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Connection error:'));
+db.once('open', function() {
+  console.log('Connected to DB');
+});
 
 var deviceSchema = new db.Schema({
     _id: { type: String, lowercase: true },
@@ -10,7 +17,3 @@ var deviceSchema = new db.Schema({
 });
 
 var Device = mongoose.model('Device', deviceSchema);
-
-this.addDevice = function() {
-  
-}

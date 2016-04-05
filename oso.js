@@ -2,11 +2,8 @@ process.stdout.write("Starting server...");
 
 var sockPort = 10611;
 
-var db = require('mongoose');
 var sv = new require('./socket.js').server
 var server = new sv(sockPort);
-
-db.connect('mongodb://192.168.1.4/oso');
 
 server.on('connection', function(ws) {
   var address = ws._socket.remoteAddress + ':' + ws._socket.remotePort;
