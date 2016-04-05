@@ -6,30 +6,34 @@ var sv = new require('./socket.js').server
 var server = new sv(sockPort);
 
 server.on('connection', function(ws) {
-  var address = ws._socket.remoteAddress + ':' + ws._socket.remotePort;
-console.log('Connection from: ' + address);
+    var address = ws._socket.remoteAddress + ':' + ws._socket.remotePort;
+    console.log('Connection from: ' + address);
 
-  ws.on('message', function(message) {
-    message = JSON.parse(message);
+    ws.on('message', function(message) {
+        message = JSON.parse(message);
 
-    if (message.id == 'hello') {
-      console.log('Device is: ' + message.data);
-    } else {
-      console.log(address + ': ' + message.data);
+        if (message.id == 'hello') {
+            console.log('Device is: ' + message.data);
+        } else if (message.id == 'pair') {
+            // add device to db
+        } else {
+
+        } {
+            console.log(address + ': ' + message.data);
+        }
+    });
+
+    ws.on('close', function close() {
+        console.log(address + ' has disconnected.');
+    });
+
+    function send(connection, data, id) {
+        var pkt = {
+            'id': id,
+            'data': data
+        }
+        connection.send(JSON.stringify(pkt));
     }
-  });
-
-  ws.on('close', function close() {
-    console.log(address + ' has disconnected.');
-  });
-
-  function send(connection, data, id) {
-    var pkt = {
-      'id': id,
-      'data': data
-    }
-    connection.send(JSON.stringify(pkt));
-  }
 });
 
 
