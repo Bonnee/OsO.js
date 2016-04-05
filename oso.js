@@ -1,6 +1,6 @@
 process.stdout.write("Starting server...");
 
-var sockPort = 10611;
+var sockPort = 11111;
 
 var sv = new require('./socket.js').server
 var server = new sv(sockPort);
