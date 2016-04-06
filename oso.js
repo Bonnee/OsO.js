@@ -17,8 +17,6 @@ server.on('connection', function(ws) {
         } else if (message.id == 'pair') {
             // add device to db
         } else {
-
-        } {
             console.log(address + ': ' + message.data);
         }
     });
