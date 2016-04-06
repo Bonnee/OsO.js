@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/oso');
-
 var db = mongoose.connection;
+
 db.on('error', console.error.bind(console, 'Connection error:'));
 db.once('open', function() {
     console.log('Connected to DB');
@@ -36,6 +35,14 @@ schema.statics.exists = function exists(id) {
 }
 
 var oso = mongoose.model('oso', schema);
+
+this.addDevice = function(manifest) {
+    var d = new oso(manifest);
+    d.save(function(err, data) {
+        if (err)
+            console.log(err);
+    });
+}
 
 mongoose.connect('mongodb://localhost/oso');
 module.export(this);
