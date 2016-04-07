@@ -30,11 +30,14 @@ this.base = function(addr, name) {
         strict: false
     });
 
-    schema.statics.exists = function exists(mac) {
-        this.count({
-            mac: String
-        }, function(e, count) {
-            if (count > 0)
+    schema.statics.exists = function exists(addr) {
+        addr = addr.toLowerCase();
+
+        this.find({
+            mac: addr
+        }, function(e, doc) {
+            console.log("Queryed: " + doc);
+            if (doc != undefined)
                 return true;
             return false;
         })
@@ -44,10 +47,9 @@ this.base = function(addr, name) {
 
     this.addDevice = function(manifest) {
         var device = new Model(manifest);
-        device.save(device,function(e,data){
-          console.log(data);
+        device.save(device, function(e, data) {
+            //console.log(data);
         });
-        //console.log(device.name);
     }
 
     this.exists = function(mac) {
