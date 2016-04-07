@@ -9,19 +9,20 @@ var server = new sv(sockPort);
 var base = require('./base.js');
 var db = new base('localhost', 'oso');
 
-server.on('connection', function (ws) {
+server.on('connection', function(ws) {
     var address = ws._socket.remoteAddress + ':' + ws._socket.remotePort;
     console.log('Connection from: ' + address);
 
-    ws.on('message', function (message) {
+    ws.on('message', function(message) {
+        console.log("Received: " + message);
         message = JSON.parse(message);
 
         if (message.id == 'hello') {
             console.log('Device is: ' + message.data);
             if (!db.exists(message.data))
-                ws.send('who', '');
+                ws.sendJSON('who', '');
         } else if (message.id == 'who') {
-            db.addDevice(message.data);
+            db.addDevice(JSON.parse(message.data));
         } else {
             console.log(address + ': ' + message.data);
         }
@@ -33,8 +34,8 @@ server.on('connection', function (ws) {
 
     function send(connection, data, id) {
         var pkt = {
-            'id': id
-            , 'data': data
+            'id': id,
+            'data': data
         }
         connection.send(JSON.stringify(pkt));
     }
