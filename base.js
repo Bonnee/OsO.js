@@ -1,16 +1,18 @@
 var mongoose = require('mongoose');
 var db = mongoose.connection;
+var Schema = mongoose.Schema;
 
-this.base = function(addr, db) {
+this.base = function(addr, name) {
     var self = this;
-
-    mongoose.connect('mongodb://' + addr + '/' + db);
+    var conn='mongodb://' + addr + '/' + name;
+    
+    mongoose.connect(conn);
     db.on('error', console.error.bind(console, 'Connection error:'));
     db.once('open', function() {
-        console.log('Connected to DB');
+        console.log('Connected to '+conn);
     });
 
-    var schema = new db.Schema({
+    var schema = new Schema({
         _id: {
             type: String,
             lowercase: true
@@ -49,4 +51,4 @@ this.base = function(addr, db) {
     }
 }
 
-module.export(this.base);
+module.exports = this.base;

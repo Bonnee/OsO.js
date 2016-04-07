@@ -3,7 +3,11 @@ process.stdout.write("Starting server...");
 var sockPort = 11111;
 
 var sv = new require('./socket.js').server
+
 var server = new sv(sockPort);
+
+
+var db = new require('./base.js')('localhost', 'oso');
 
 server.on('connection', function(ws) {
     var address = ws._socket.remoteAddress + ':' + ws._socket.remotePort;
