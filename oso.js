@@ -17,44 +17,42 @@ server.on('connection', function(ws) {
     console.log('Connection from: ' + address);
 
     ws.on('message', function(message) {
-            console.log("Received: " + message);
-            message = JSON.parse(message);
+        //console.log("Received: " + message);
+        message = JSON.parse(message);
 
-            if (message.id == 'hello' && state == State.Connecting) { // Initial connection. Only accepted when state is 0
-                db.exists(message.data, function(ex) {
-                    if (!ex) {
-                        state = State.Associating;
-                        ws.sendJSON('who', '');
-                        console.log("Device doesn't exist in db. Requesting data...");
-
-                    } else { // Skip association
-                        state = State.Connected;
-                        console.log('Welcome back ' + message.data);
-                    }
-                    devId = message.data;
-                });
-            } else if (message.id == 'who' && state = State.Associating) { // Adds a new device in db
-                state = State.Connected;
-                db.addDevice(JSON.parse(message.data));
-            } else if (message.id = 'data' && state = State.Connected) {
-
-            }
+        if (message.id == 'hello' && state == State.Connecting) { // Initial connection. Only accepted when state is 0
+            db.exists(message.data, function(ex) {
+                if (!ex) {
+                    state = State.Associating;
+                    ws.sendJSON('who', '');
+                    console.log(message.data + ' does not exist in db. Requesting data...');
+                } else { // Skip association
+                    state = State.Connected;
+                    console.log(message.data + ' recognized.');
+                }
+                devId = message.data;
+            });
+        } else if (message.id == 'who' && state = State.Associating) { // Adds a new device in db
+            state = State.Connected;
+            db.addDevice(JSON.parse(message.data));
+        } else if (message.id = 'data' && state = State.Connected) {
+            // Add code
         } else {
             console.log(address + ': ' + message.data);
         }
     });
 
-ws.on('close', function close() {
-    console.log(address + ' has disconnected.');
-});
+    ws.on('close', function close() {
+        console.log(address + ' has disconnected.');
+    });
 
-function send(connection, data, id) {
-    var pkt = {
-        'id': id,
-        'data': data
+    function send(connection, data, id) {
+        var pkt = {
+            'id': id,
+            'data': data
+        }
+        connection.send(JSON.stringify(pkt));
     }
-    connection.send(JSON.stringify(pkt));
-}
 });
 
 var State = {
