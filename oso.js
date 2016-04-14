@@ -29,9 +29,9 @@ server.on('connection', function(ws) {
 
                     } else { // Skip association
                         state = State.Connected;
-                        devId = message.data;
                         console.log('Welcome back ' + message.data);
                     }
+                    devId = message.data;
                 });
             } else if (message.id == 'who' && state = State.Associating) { // Adds a new device in db
                 state = State.Connected;
@@ -64,31 +64,5 @@ var State = {
     Exchange: 3,
     Error: 4
 }
-
-
-/*
-
-this.server = function (port) {
-    ev.call(this);
-
-    var wss = new ws.Server({
-        port: port
-    });
-
-    wss.broadcast = function (data) {
-        for (var i in this.clients)
-            send(this.clients[i], data, 'upd');
-    }
-
-    wss.on('connection', function (ws) {
-        console.log('conn');
-        this.emit('conn', ws);
-
-        ws.on('message', function (data) {
-            console.log('data');
-            this.emit('data', data);
-        });
-    });
-}*/
 
 console.log('started.');
