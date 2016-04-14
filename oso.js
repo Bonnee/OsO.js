@@ -9,43 +9,61 @@ var server = new sv(sockPort);
 var base = require('./base.js');
 var db = new base('localhost', 'oso');
 
-server.on('connection', function (ws) {
+server.on('connection', function(ws) {
     var address = ws._socket.remoteAddress + ':' + ws._socket.remotePort;
+    var state = State.Connecting;
+    var devId;
+
     console.log('Connection from: ' + address);
 
-    ws.on('message', function (message) {
-        console.log("Received: " + message);
-        message = JSON.parse(message);
+    ws.on('message', function(message) {
+            console.log("Received: " + message);
+            message = JSON.parse(message);
 
-        if (message.id == 'hello') { // Initial connection
-            db.exists(message.data, function (ex) {
-                console.log(ex);
-                if (!ex) {
-                    ws.sendJSON('who', '');
-                    console.log("Device doesn't exist in db. Requesting data...");
-                } else {
-                    console.log('Welcome back ' + message.data);
-                }
-            });
-        } else if (message.id == 'who') { // If device doesn't exists
-            db.addDevice(JSON.parse(message.data));
+            if (message.id == 'hello' && state == State.Connecting) { // Initial connection. Only accepted when state is 0
+                db.exists(message.data, function(ex) {
+                    if (!ex) {
+                        state = State.Associating;
+                        ws.sendJSON('who', '');
+                        console.log("Device doesn't exist in db. Requesting data...");
+
+                    } else { // Skip association
+                        state = State.Connected;
+                        devId = message.data;
+                        console.log('Welcome back ' + message.data);
+                    }
+                });
+            } else if (message.id == 'who' && state = State.Associating) { // Adds a new device in db
+                state = State.Connected;
+                db.addDevice(JSON.parse(message.data));
+            } else if (message.id = 'data' && state = State.Connected) {
+
+            }
         } else {
             console.log(address + ': ' + message.data);
         }
     });
 
-    ws.on('close', function close() {
-        console.log(address + ' has disconnected.');
-    });
-
-    function send(connection, data, id) {
-        var pkt = {
-            'id': id
-            , 'data': data
-        }
-        connection.send(JSON.stringify(pkt));
-    }
+ws.on('close', function close() {
+    console.log(address + ' has disconnected.');
 });
+
+function send(connection, data, id) {
+    var pkt = {
+        'id': id,
+        'data': data
+    }
+    connection.send(JSON.stringify(pkt));
+}
+});
+
+var State = {
+    Connecting: 0,
+    Associating: 1,
+    Connected: 2,
+    Exchange: 3,
+    Error: 4
+}
 
 
 /*
