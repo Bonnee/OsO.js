@@ -25,7 +25,6 @@ this.base = function(addr, name) {
             default: Date.now
         },
         connected: Boolean,
-        ,
         settings: [Schema.Types.Mixed],
         data: [Schema.Types.Mixed]
     }, {
