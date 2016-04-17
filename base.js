@@ -13,7 +13,7 @@ this.base = function(addr, name) {
 	});
 
 	var schema = new Schema({
-		mac: {
+		_id: {
 			type: String,
 			lowercase: true
 		},
@@ -31,11 +31,11 @@ this.base = function(addr, name) {
 		strict: false
 	});
 
-	schema.statics.exists = function(addr, back) {
-		addr = addr.toLowerCase();
+	schema.statics.exists = function(mac, back) {
+		mac = mac.toLowerCase();
 
 		this.find({
-			mac: addr
+			_id: mac
 		}, function(e, doc) {
 			if (doc.length > 0)
 				back(true);
@@ -46,32 +46,31 @@ this.base = function(addr, name) {
 
 	var Model = mongoose.model('devices', schema);
 
-	this.addDevice = function(mac, manifest) {
-		var device = new Model(manifest);
-		Model._id = mac;
-		device.save(device, function(e, data) {
-			if (e)
-				console.log(e);
-			console.log(data);
-		});
-	}
-
 	this.exists = function(mac, back) {
 		return Model.exists(mac, back);
 	}
 
+	this.addDevice = function(mac, manifest) {
+		var device = new Model(manifest);
+		device._id = mac;
+		device.save(device, function(e, data) {
+			if (e)
+				console.log(e);
+		});
+	}
+
 	this.addRecord = function(mac, message) {
 		Model.findByIdAndUpdate(
-			mac, {
+			mac.toLowerCase(), {
 				$push: {
 					"data": {
-						timestamp: Date.now,
-						data: message
+						timestamp: message.timestamp,
+						data: message.data
 					}
 				}
 			},
-			function(err, model) {
-				if (err) console.log(err);
+			function(e, model) {
+				if (e) console.log(e);
 				console.log(model);
 			}
 		);
