@@ -71,7 +71,7 @@ this.base = function(addr, name) {
 			},
 			function(e, model) {
 				if (e) console.log(e);
-				console.log(model);
+				console.log(JSON.stringify(model));
 			}
 		);
 	}

@@ -22,16 +22,16 @@ server.on('connection', function(ws) {
 
 		if (message.id == 'hello' && state == State.Connecting) { // Initial connection. Only accepted when state is 0
 			db.exists(message.data, function(ex) {
+				devId = message.data;
 				if (!ex) {
 					state = State.Associating;
-					ws.sendJSON('who', message.data);
+					ws.sendJSON('who', '');
 					console.log(message.data + ' does not exist in db. Requesting data...');
 				} else { // Skip association
 					state = State.Connected;
 					ws.sendJSON('welcome', '');
 					console.log(message.data + ' recognized.');
 				}
-				devId = message.data;
 			});
 		} else if (message.id == 'who' && state == State.Associating) { // Adds a new device in db
 			state = State.Connected;
