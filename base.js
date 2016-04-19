@@ -25,8 +25,7 @@ this.base = function(addr, name) {
 			default: Date.now
 		},
 		connected: Boolean,
-		settings: [Schema.Types.Mixed],
-		data: [Schema.Types.Mixed]
+		settings: [Schema.Types.Mixed]
 	}, {
 		strict: false
 	});
@@ -38,9 +37,9 @@ this.base = function(addr, name) {
 			_id: mac
 		}, function(e, doc) {
 			if (doc.length > 0)
-				back(true);
+				back(true, doc[0]);
 			else
-				back(false);
+				back(false, doc);
 		});
 	}
 
@@ -57,23 +56,27 @@ this.base = function(addr, name) {
 			if (e)
 				console.log(e);
 		});
+		return device;
 	}
 
 	this.addRecord = function(mac, message) {
+		var update = {
+			$push: {}
+		};
+		var type = message.type;
+		delete message.type;
+		update.$push[type] = message;
+
+
 		Model.findByIdAndUpdate(
-			mac.toLowerCase(), {
-				$push: {
-					"data": {
-						timestamp: message.timestamp,
-						data: message.data
-					}
-				}
-			},
-			function(e, model) {
+			mac.toLowerCase(),
+			update,
+			function(e, data) {
 				if (e) console.log(e);
-				console.log(JSON.stringify(model));
+				model = data;
 			}
 		);
+		return update.$push;
 	}
 }
 
