@@ -9,5 +9,5 @@ OsO.js is written in JavaScript and makes use of the following technologies:
   * express
   * mongoose
   * ws
-* Bootstrap (For the frontend)
+* AngularJS
 * jQuery
