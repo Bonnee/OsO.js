@@ -17,7 +17,7 @@ this.Server = function(port, db) {
 				devId = data;
 				if (ex) { // Skip association
 					state = State.Connected;
-					device.emit('welcome', dev.name);
+					device.emit('hello', dev.name);
 					console.log(JSON.stringify(dev.name) + ' recognized.');
 				} else { // Asks for manifest
 					state = State.Associating;
@@ -29,7 +29,7 @@ this.Server = function(port, db) {
 
 		device.on('pair', function(data) {
 			state = State.Connected;
-			var dev = db.addDevice(devId, JSON.parse(message.data));
+			var dev = db.addDevice(devId, data);
 			device.emit('hello', dev.name);
 			console.log(dev.name + ' added.');
 		});
@@ -37,6 +37,14 @@ this.Server = function(port, db) {
 		device.on('log', function(data) {
 			console.log(db.addRecord(devId, data));
 		});
+
+		device.on('warning', function(data) {
+			if (data.value == 1)
+				db.find(devId, function(dev) {
+					console.log(dev);
+					console.log("[WARNING][" + dev.name + "] " + data.id + " raised an alarm");
+				})
+		})
 
 		device.on('message', function(data) {
 			console.log(data);

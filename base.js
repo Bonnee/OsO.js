@@ -49,6 +49,14 @@ this.base = function(addr, name) {
 		return Model.exists(mac, back);
 	}
 
+	this.find = function(id, back) {
+		Model.find({
+			_id: id.toLowerCase()
+		}, function(e, doc) {
+			return back(doc[0]);
+		});
+	}
+
 	this.addDevice = function(mac, manifest) {
 		var device = new Model(manifest);
 		device._id = mac;
@@ -59,21 +67,19 @@ this.base = function(addr, name) {
 		return device;
 	}
 
-	this.addRecord = function(mac, message) {
+	this.addRecord = function(mac, data) {
 		var update = {
 			$push: {}
 		};
-		var type = message.type;
-		delete message.type;
-		update.$push[type] = message;
-
+		var type = data.id;
+		delete data.id;
+		update.$push[type] = data;
 
 		Model.findByIdAndUpdate(
 			mac.toLowerCase(),
 			update,
-			function(e, data) {
+			function(e, model) {
 				if (e) console.log(e);
-				model = data;
 			}
 		);
 		return update.$push;
