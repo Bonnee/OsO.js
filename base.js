@@ -9,7 +9,7 @@ this.base = function(addr, name) {
 
 	db.on('error', console.error.bind(console, 'Connection error:'));
 	db.once('open', function() {
-		console.log('Connected to ' + conn);
+		console.log('db is ' + conn);
 	});
 
 	var schema = new Schema({
