@@ -8,6 +8,6 @@ OsO.js is written in JavaScript and makes use of the following technologies:
 * Node.js (For the backend)
   * express
   * mongoose
-  * ws
+  * Socket.io
 * AngularJS
 * jQuery
