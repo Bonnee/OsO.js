@@ -1,5 +1,5 @@
 # Ohm sweet Ohm
-### Domotics made easy
+### Domotics, made easy
 OsO.js is a simple system aimed to centralize and easilly manage home automation devices.
 OsO.js is built with the latest open-web technologies.
 OsO.js is modular.
