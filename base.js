@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var db = mongoose.connection;
-var Schema = mongoose.Schema;
+//var Schema = mongoose.Schema;
 
 this.base = function(addr, name) {
 	var self = this;
@@ -12,59 +12,26 @@ this.base = function(addr, name) {
 		console.log('db is ' + conn);
 	});
 
-	var schema = new Schema({
-		_id: {
-			type: String,
-			lowercase: true
-		},
-		name: String,
-		description: String,
-		location: String,
-		dateAdd: {
-			type: Date,
-			default: Date.now
-		},
-		connected: Boolean,
-		settings: [Schema.Types.Mixed]
-	}, {
-		strict: false
-	});
-
-	schema.statics.exists = function(mac, back) {
-		mac = mac.toLowerCase();
-
-		this.find({
-			_id: mac
-		}, function(e, doc) {
-			if (doc.length > 0)
-				back(true, doc[0]);
-			else
-				back(false, doc);
-		});
-	}
-
-	var Model = mongoose.model('devices', schema);
+	var Devices = require('./models/devices.js');
 
 	this.exists = function(mac, back) {
-		return Model.exists(mac, back);
+		return Devices.exists(mac, back);
 	}
 
 	this.find = function(id, back) {
-		Model.find({
+		Devices.find({
 			_id: id.toLowerCase()
 		}, function(e, doc) {
 			return back(doc[0]);
 		});
 	}
 
-	this.addDevice = function(mac, manifest) {
-		var device = new Model(manifest);
-		device._id = mac;
-		device.save(device, function(e, data) {
-			if (e)
-				console.log(e);
+	this.addDevice = function(mac, manifest, back) {
+		manifest["_id"] = mac;
+		Devices.create(manifest, function(err, res) {
+			if (err) return err;
+			else back(res);
 		});
-		return device;
 	}
 
 	this.addRecord = function(mac, data) {
@@ -75,7 +42,7 @@ this.base = function(addr, name) {
 		delete data.id;
 		update.$push[type] = data;
 
-		Model.findByIdAndUpdate(
+		Devices.findByIdAndUpdate(
 			mac.toLowerCase(),
 			update,
 			function(e, model) {

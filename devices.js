@@ -27,9 +27,10 @@ this.Server = function(port, db) {
 
 		device.once('pair', function(data) {
 			state = State.Pairing;
-			var dev = db.addDevice(devId, data);
-			device.emit('hello', dev.name);
-			console.log(dev.name + ' added.');
+			var dev = db.addDevice(devId, data, function(res) {
+				device.emit('hello', dev.name);
+				console.log(dev.name + ' added.');
+			});
 		});
 
 		device.on('log', function(data) {
