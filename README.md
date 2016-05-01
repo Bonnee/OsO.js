@@ -1,13 +1,11 @@
 # Ohm sweet Ohm
-OsO.js is a simple server aimed to centralize and easilly manage home automation devices.
-OsO.js uses WebSockets to communicate with the devices and MongoDB (A NOSQL database based on JSON) to store all their data.
+### Domotics made easy
+OsO.js is a simple system aimed to centralize and easilly manage home automation devices.
+OsO.js is built with the latest open-web technologies.
+OsO.js is modular.
 
-It also features a web control panel that shows all the data about the devices connected.
+With OsO.js you can easilly manage all your devices in a single dashboard.
 
 OsO.js is written in JavaScript and makes use of the following technologies:
-* Node.js (For the backend)
-  * express
-  * mongoose
-  * Socket.io
-* AngularJS
-* jQuery
+* The MEAN stack (MongoDB, Express.js, Angular.js and Node.js);
+* Socket.io (to communicate with the devices);
