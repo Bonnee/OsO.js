@@ -13,7 +13,8 @@ var DeviceSchema = new mongoose.Schema({
 		default: Date.now
 	},
 	connected: Boolean,
-	settings: [mongoose.Schema.Types.Mixed]
+	settings: {},
+	data: {}
 }, {
 	strict: false
 });

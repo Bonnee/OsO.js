@@ -35,18 +35,32 @@ this.base = function(addr, name) {
 	}
 
 	this.addRecord = function(mac, data) {
-		var update = {
-			$push: {}
-		};
 		var type = data.id;
 		delete data.id;
-		update.$push[type] = data;
+
+		var update = {};
+
+		update[type] = [data];
+
+		//update.data[type] = data;
+		/*update.data[type] = {
+			$push: [data]
+		};*/
+
+		console.log(update);
 
 		Devices.findByIdAndUpdate(
-			mac.toLowerCase(),
-			update,
-			function(e, model) {
+			mac.toLowerCase(), {
+				data: {
+					$push: update
+				}
+			},
+			function(e, device) {
 				if (e) console.log(e);
+				else {
+					console.log(device);
+					//device.data[type].push(data);
+				}
 			}
 		);
 		return update.$push;
