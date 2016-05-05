@@ -20,7 +20,7 @@ var devs = require('./devices.js');
 
 process.stdout.write('loading database...');
 var base = require('./base.js');
-var db = new base('localhost', 'oso');
+var db = new base('192.168.1.13', 'oso');
 
 var deviceServer = new devs(sockPort, db);
 

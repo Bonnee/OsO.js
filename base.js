@@ -38,32 +38,25 @@ this.base = function(addr, name) {
 		var type = data.id;
 		delete data.id;
 
-		var update = {};
-
-		update[type] = [data];
+		//update.[type] = [data];
 
 		//update.data[type] = data;
 		/*update.data[type] = {
 			$push: [data]
 		};*/
 
-		console.log(update);
+		//console.log(update);
 
-		Devices.findByIdAndUpdate(
-			mac.toLowerCase(), {
-				data: {
-					$push: update
-				}
-			},
-			function(e, device) {
-				if (e) console.log(e);
-				else {
-					console.log(device);
-					//device.data[type].push(data);
-				}
+		Devices.findOne(mac.toLowerCase()).lean().exec(function(e, device) {
+			if (e) console.log(e);
+			else {
+				//device = device._doc.toObject();
+				console.log("Found: " + JSON.stringify(device));
+				device = device["data"];
+				device[type] = [data];
 			}
-		);
-		return update.$push;
+		});
+		return data;
 	}
 }
 
