@@ -34,8 +34,8 @@ this.Server = function(port, db) {
 		});
 
 		device.on('log', function(data) {
-			console.log(JSON.stringify(data));
-			console.log(db.addRecord(devId, data));
+			console.log("[" + devId + "]:", data);
+			db.addRecord(devId, data);
 		});
 
 		device.on('warning', function(data) {

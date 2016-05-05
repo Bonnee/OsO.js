@@ -49,7 +49,6 @@ this.base = function(addr, name) {
 			new: true
 		}, function(err, mod) {
 			if (err) console.log(err);
-			else console.log(JSON.stringify(mod));
 		});
 
 		return data;
