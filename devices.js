@@ -39,10 +39,15 @@ this.Server = function(port, db) {
 		});
 
 		device.on('warning', function(data) {
-			if (data.value == 1)
+			if (data.value == 1) {
 				db.find(devId, function(dev) {
 					console.log("[WARNING][" + dev.name + "] " + data.id + " raised an alarm");
-				})
+				});
+			} else {
+				db.find(devId, function(dev) {
+					console.log("[WARNING][" + dev.name + "] " + data.id + " stopped an alarm");
+				});
+			}
 		})
 
 		device.on('message', function(data) {
