@@ -38,20 +38,26 @@ this.base = function(addr, name) {
 		var type = data.id;
 		delete data.id;
 
-		var update = {
-			$push: {}
-		};
+		var update = {};
+		update[type] = [data];
 
-		update.$push["data." + type] = data;
+		console.log(update);
 
-		Devices.findByIdAndUpdate(mac.toLowerCase(), update, {
-			upsert: true,
-			new: true
-		}, function(err, mod) {
-			if (err) console.log(err);
-		});
-
-		return data;
+		Devices.findByIdAndUpdate(
+			mac.toLowerCase(), {
+				data: {
+					update
+				}
+			},
+			function(e, device) {
+				if (e) console.log(e);
+				else {
+					console.log(device);
+					//device.data[type].push(data);
+				}
+			}
+		);
+		return update.$push;
 	}
 }
 
