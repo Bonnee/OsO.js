@@ -12,7 +12,7 @@ this.base = function(addr, name) {
 		console.log('db is ' + conn);
 	});
 
-	var Devices = require('./models/devices.js');
+	var Devices = require('./models/device.js');
 
 	this.exists = function(mac, back) {
 		return Devices.exists(mac, back);
