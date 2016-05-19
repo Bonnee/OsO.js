@@ -10,16 +10,15 @@ this.Server = function(port, db) {
 
 		device.on('hello', function(data) {
 			state = State.Connected;
-			console.log(data);
-			db.exists(data, function(ex, dev) {
-				devId = data;
-				if (ex) { // Skip association
+			db.exists(data, function(response, dev) {
+				devId = data.toLowerCase();
+				if (response) { // Skip association
 					state = State.Connected;
 					device.emit('hello', dev.name);
 					console.log(JSON.stringify(dev.name) + ' recognized.');
 				} else { // Asks for manifest
 					state = State.Pairing;
-					device.emit('pair', devId);
+					device.emit('pair', data);
 					console.log(data + ' does not exist in db. Requesting data...');
 				}
 			});
@@ -27,10 +26,34 @@ this.Server = function(port, db) {
 
 		device.once('pair', function(data) {
 			state = State.Pairing;
-			db.addDevice(devId, data, function(dev) {
+			db.addDevice(devId, data, function(dev, err) {
 				device.emit('hello', dev.name);
+				device.emit('dashboard', devId);
 				console.log(dev.name + ' added.');
 			});
+
+			require('fs').mkdir(__dirname + '/views/' + devId, function(e) {
+				if (e)
+					console.log(e)
+				else
+					console.log('Created ' + devId + ' directory.');
+			});
+		});
+
+		device.on('dashboard', function(data) {
+			var path = __dirname + '/views/' + devId + '/' + data.path;
+
+			console.log(path + " - dir: " + data.dir);
+			var fs = require('fs');
+			if (data.dir) {
+				fs.stat(path, function(err, stat) {
+					if (!stat) {
+						fs.mkdir(path);
+					}
+				});
+			} else {
+				require('fs').writeFile(path, data.file);
+			}
 		});
 
 		device.on('log', function(data) {
