@@ -1,4 +1,5 @@
 var io = require('socket.io')();
+var fs = require('fs');
 
 this.Server = function(port, db) {
 
@@ -28,11 +29,12 @@ this.Server = function(port, db) {
 			state = State.Pairing;
 			db.addDevice(devId, data, function(dev, err) {
 				device.emit('hello', dev.name);
-				device.emit('dashboard', devId);
+
 				console.log(dev.name + ' added.');
 			});
 
-			require('fs').mkdir(__dirname + '/views/' + devId, function(e) {
+			fs.mkdir(__dirname + '/public/devices/' + devId, function(e) {
+				device.emit('dashboard', devId);
 				if (e)
 					console.log(e)
 				else
@@ -41,10 +43,10 @@ this.Server = function(port, db) {
 		});
 
 		device.on('dashboard', function(data) {
-			var path = __dirname + '/views/' + devId + '/' + data.path;
+			var path = __dirname + '/public/devices/' + devId + '/' + data.path;
 
 			console.log(path + " - dir: " + data.dir);
-			var fs = require('fs');
+
 			if (data.dir) {
 				fs.stat(path, function(err, stat) {
 					if (!stat) {
@@ -52,7 +54,7 @@ this.Server = function(port, db) {
 					}
 				});
 			} else {
-				require('fs').writeFile(path, data.file);
+				fs.writeFile(path, data.file);
 			}
 		});
 
