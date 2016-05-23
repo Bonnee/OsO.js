@@ -13,46 +13,49 @@
     <title>Ohm Sweet Ohm | Dashboard</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="/css/dashboard.css" rel="stylesheet">
+    <link href="css/dashboard.css" rel="stylesheet">
 
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-    <script src="/js/controller.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/controller.js"></script>
 </head>
 
 <body ng-app="OsO">
 
-    <nav class="navbar navbar-dark navbar-fixed-top bg-inverse">
-        <button type="button" class="navbar-toggler hidden-sm-up" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Ohm Sweet Ohm</a>
-        <div id="navbar">
-            <nav class="nav navbar-nav pull-xs-left">
-                <a class="nav-item nav-link" href="#">Dashboard</a>
-                <a class="nav-item nav-link" href="#">Settings</a>
-                <a class="nav-item nav-link" href="#">Profile</a>
-                <a class="nav-item nav-link" href="#">Help</a>
-            </nav>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Ohm Sweet Ohm</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
     <div class="container-fluid">
         <div class="row" ng-controller="devices">
             <div class="col-sm-3 col-md-2 sidebar">
+                <h3>Devices</h3>
                 <ul class="nav nav-sidebar">
                     <li data-ng-repeat="device in devices" id="{{device.id}}">
                         <a ng-click="select({{device.id}})">{{device.name}}</a></li>
                 </ul>
             </div>
-            <!--<div class=" col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main " ng-include src="/devices/{{devices[0].id}} ">
-
-            </div>-->
+            <div class=" col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main " ng-include="'/pub/devices/00:0d:3a:b3:22:30/index.html'">
+<p>{{devices[0]}}</p>
+            </div>
         </div>
     </div>
 
@@ -63,9 +66,9 @@
     <script>
         window.jQuery || document.write('<script src="/js/jquery.min.js "><\/script>')
     </script>
-    <script src="/js/bootstrap.min.js "></script>
+    <script src="js/bootstrap.min.js "></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="/js/ie10-viewport-bug-workaround.js "></script>
+    <script src="js/ie10-viewport-bug-workaround.js "></script>
 </body>
 
 </html>

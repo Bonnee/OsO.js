@@ -27,7 +27,7 @@ app.set('view engine', 'ejs');
 
 
 app.use('/devices', devices);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/pub', express.static(path.join(__dirname, 'public')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
