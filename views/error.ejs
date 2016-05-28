@@ -2,13 +2,24 @@
 <html>
 
 <head>
-    <!--<link rel='stylesheet' href='/css/style.css' />-->
+    <title>Error
+        <%= error.status %>:
+            <%= message %>
+    </title>
+    <link rel='stylesheet' href='/pub/css/style.css' />
 </head>
 
 <body>
-    <h1><%= message %></h1>
-    <h2><%= error.status %></h2>
-    <pre><%= error.stack %></pre>
+    <div class="page-block">
+        <h1><%= error.status %>: <%= message %></h1>
+        <h2>What you want to get, well... can't be done. Try later. Or maybe... never.</h2>
+        </br>
+        </br>
+        <h1 style="position:absolute;bottom:50px">WARNING! For nerds only. Scroll down if you think this shouldn't happen</h1>
+    </div>
+    <pre class="page-block">
+        <%= error.stack %>
+    </pre>
 </body>
 
 </html>

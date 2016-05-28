@@ -1,14 +1,31 @@
 var app = angular.module('OsO', []);
 
-var selected;
-
 app.controller('devices', function($scope, $http) {
-	$http.get("/devices")
-		.then(function(response) {
-			$scope.devices = response.data;
-		});
+	var selected;
 
-	function select(id) {
-		selected = id;
+	$http.get("/devices").then(function(res) {
+		$scope.devices = res.data;
+
+		for (var i = 0; i < $scope.devices.length; i++) {
+			$scope.devices[i].url = "/pub/devices/" + $scope.devices[i].id + "/index.html";
+		}
+
+		$scope.select(0); // Select the first tab to display something
+	});
+
+	$scope.selected = function() {
+		console.log(selected);
+		return selected;
 	}
+
+	$scope.select = function(i) {
+		selected = $scope.devices[i];
+	}
+
+	$scope.isActive = function(i) {
+		if (selected == $scope.devices[i])
+			return true;
+		return false;
+	}
+
 });
