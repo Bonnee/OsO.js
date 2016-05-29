@@ -44,12 +44,14 @@
         </div>
         </nav>
 
+
+
         <div class="container-fluid">
             <div class="row">
-                <div id="navbar" class="col-sm-3 col-md-2 sidebar navbar-collapse collapse" ng-controller="devices">
+                <div id="navbar" class="col-sm-3 col-md-2 sidebar collapse" ng-controller="devices">
                     <h3 style="margin-top:0;">Devices</h3>
                     <ul class="nav nav-sidebar">
-                        <li ng-class="{active:isActive($index)}" data-ng-repeat="device in devices">
+                        <li ng-class="{active:isActive($index)}" data-ng-repeat="device in getDevices()">
                             <a ng-click="select($index)" ng-model="device.name">
                                 <h4>{{device.name}}</h4>
                                 <p>{{device.location}}</p>
@@ -57,23 +59,22 @@
                         </li>
                     </ul>
                 </div>
+                <div ng-bind-html="getSelected().content | to_trusted" class=" col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main ">
+                    <h2>Loading...</h2>
+                </div>
             </div>
-            <ng-include src="selected().url" class=" col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main ">
-                <h2>Loading...</h2>
-            </ng-include>
         </div>
-    </div>
 
-    <!-- Bootstrap core JavaScript
+        <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js "></script>
-    <script>
-        window.jQuery || document.write('<script src="/js/jquery.min.js "><\/script>')
-    </script>
-    <script src="js/bootstrap.min.js "></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="js/ie10-viewport-bug-workaround.js "></script>
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js "></script>
+        <script>
+            window.jQuery || document.write('<script src="/js/jquery.min.js "><\/script>')
+        </script>
+        <script src="js/bootstrap.min.js "></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="js/ie10-viewport-bug-workaround.js "></script>
 </body>
 
 </html>
