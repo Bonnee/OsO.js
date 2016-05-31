@@ -1,11 +1,12 @@
-var app = angular.module('OsO', []);
+//var app = angular.module('OsO', []);
+var app = angular.module('app', ['ngSanitize']);
 
 var devices;
 var selected;
 
 // Filter to trust html using ng-bind-html
 angular.module('OsO')
-	.filter('to_trusted', ['$sce', function($sce) {
+	.filter('trusted', ['$sce', function($sce) {
 		return function(text) {
 			return $sce.trustAsHtml(text);
 		};
@@ -17,7 +18,7 @@ angular.module('OsO')
 
 	Take a deep breath if you want to understand it. Really.
 */
-app.controller('devices', ['$scope', '$http', function($scope, $http) {
+app.controller('devices', ['$scope', '$http', '$sce', function($scope, $http, $sce) {
 
 	$http.get("/devices").then(function(res) {
 		devices = res.data;
@@ -37,11 +38,17 @@ app.controller('devices', ['$scope', '$http', function($scope, $http) {
 		return devices;
 	}
 
+	$scope.content = "<h2>Loading...</h2>";
+
+	$scope.trustedHtml = function(text) {
+		return $sce.trustAsHtml(text);
+	}
+
 	$scope.select = function(i) { // Changes the selected device
 		selected = i;
 
 		$scope.render().done(function(page) {
-			console.log(page);
+			$scope.content = page;
 		});
 	}
 

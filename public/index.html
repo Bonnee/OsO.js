@@ -19,62 +19,65 @@
     <link href="css/dashboard.css" rel="stylesheet">
 
     <script src="js/angular.min.js"></script>
+    <script src="js/angular-sanitize.min.js"></script>
+
     <script src="js/ui-bootstrap.min.js"></script>
     <script src="js/controller.js"></script>
 </head>
 
-<body ng-app="OsO">
-    <div <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/pub/">Ohm Sweet Ohm</a>
-            </div>
-            <div id="topbar">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/pub/">Dashboard</a></li>
-                    <li><a href="#">Settings</a></li>
-                </ul>
-            </div>
-        </div>
-        </nav>
-
-
-
-        <div class="container-fluid">
-            <div class="row">
-                <div id="navbar" class="col-sm-3 col-md-2 sidebar collapse" ng-controller="devices">
-                    <h3 style="margin-top:0;">Devices</h3>
-                    <ul class="nav nav-sidebar">
-                        <li ng-class="{active:isActive($index)}" data-ng-repeat="device in getDevices()">
-                            <a ng-click="select($index)" ng-model="device.name">
-                                <h4>{{device.name}}</h4>
-                                <p>{{device.location}}</p>
-                            </a>
-                        </li>
+<body data-ng-app="OsO">
+    <div>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/pub/">Ohm Sweet Ohm</a>
+                </div>
+                <div id="topbar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/pub/">Dashboard</a></li>
+                        <li><a href="#">Settings</a></li>
                     </ul>
                 </div>
-                <div ng-bind-html="getSelected().content | to_trusted" class=" col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main ">
-                    <h2>Loading...</h2>
-                </div>
+            </div>
+        </nav>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div id="navbar" class="col-sm-3 col-md-2 sidebar collapse" data-ng-controller="devices">
+                <h3 style="margin-top:0;">Devices</h3>
+                <ul class="nav nav-sidebar">
+                    <li data-ng-class="{active:isActive($index)}" data-ng-repeat="device in getDevices()">
+                        <a data-ng-click="select($index)" data-ng-model="device.name">
+                            <h4>{{device.name}}</h4>
+                            <p>{{device.location}}</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div data-ng-bind-html="content | trusted" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <h2>Loading...</h2>
             </div>
         </div>
+    </div>
 
-        <!-- Bootstrap core JavaScript
+    <!-- Bootstrap core JavaScript
     ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js "></script>
-        <script>
-            window.jQuery || document.write('<script src="/js/jquery.min.js "><\/script>')
-        </script>
-        <script src="js/bootstrap.min.js "></script>
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="js/ie10-viewport-bug-workaround.js "></script>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js "></script>
+    <script>
+        window.jQuery || document.write('<script src="/js/jquery.min.js "><\/script>')
+    </script>
+    <script src="js/bootstrap.min.js "></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js "></script>
 </body>
 
 </html>
