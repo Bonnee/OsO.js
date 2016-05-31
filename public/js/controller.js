@@ -1,34 +1,23 @@
-//var app = angular.module('OsO', []);
-var app = angular.module('app', ['ngSanitize']);
+var app = angular.module('OsO', ['ngRoute']);
 
 var devices;
 var selected;
+var def = $.Deferred();
 
-// Filter to trust html using ng-bind-html
-angular.module('OsO')
-	.filter('trusted', ['$sce', function($sce) {
-		return function(text) {
-			return $sce.trustAsHtml(text);
-		};
-    }]);
-
-
-/*
-	Lasciate ogni speranza voi ch'entrate
-
-	Take a deep breath if you want to understand it. Really.
-*/
-app.controller('devices', ['$scope', '$http', '$sce', function($scope, $http, $sce) {
-
-	$http.get("/devices").then(function(res) {
-		devices = res.data;
-
-		for (var i = 0; i < devices.length; i++) {
-			devices[i].url = "/pub/devices/" + devices[i].id + "/index.html";
-		}
-
-		$scope.select(0); // Select the first tab to display something
+function init() {
+	$.getJSON("/devices", function(res) {
+		devices = res;
+		def.resolve(res);
+		console.log(devices);
 	});
+}
+
+app.controller('devices', ['$scope', '$http', 'ngRoute', function($scope, $http) {
+	def.promise();
+
+	$scope.select(0); // Select the first tab to display something
+
+	$scope.url = '';
 
 	$scope.getSelected = function() { // Returns the currently selected device.
 		return devices[selected];
@@ -38,42 +27,10 @@ app.controller('devices', ['$scope', '$http', '$sce', function($scope, $http, $s
 		return devices;
 	}
 
-	$scope.content = "<h2>Loading...</h2>";
-
-	$scope.trustedHtml = function(text) {
-		return $sce.trustAsHtml(text);
-	}
-
 	$scope.select = function(i) { // Changes the selected device
 		selected = i;
 
-		$scope.render().done(function(page) {
-			$scope.content = page;
-		});
-	}
-
-	/*
-		Here comes the mess.
-
-		This function fetches the content of the devices's dashboard, caches it, and returns it using jQuery's promise.
-		Example:
-
-		render().done(function(){ ... });
-	*/
-	$scope.render = function() {
-		var content;
-		var d = $.Deferred();
-
-		var dev = devices[selected];
-
-		if (dev.content == undefined) {
-			$http.get(dev.url).then(function(res) {
-				dev.content = res.data;
-				d.resolve(res.data);
-			});
-		}
-
-		return d.promise();
+		//$scope.url = devices[selected].url;
 	}
 
 	$scope.isActive = function(i) {
@@ -84,8 +41,19 @@ app.controller('devices', ['$scope', '$http', '$sce', function($scope, $http, $s
 
 }]);
 
-app.controller('view', function($scope) {
-	$scope.getSelected = function() {
-		return devices[selected];
+app.config(['$routeProvider', '$locationProvider',
+  function($routeProvider, $locationProvider) {
+		def.promise();
+		for (var i = 0; i < devices.length; i++) {
+			$routeProvider.when('/pub' + devices[i].id, {
+				templateUrl: 'devices/' + devices[i].id + "/index.html",
+				controller: 'Ctrl'
+			});
+		}
+		$routeProvider.otherwise({
+			redirectTo: '/pub'
+		});
+
+		$locationProvider.html5Mode(true);
 	}
-});
+]);

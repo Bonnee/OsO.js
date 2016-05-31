@@ -18,9 +18,9 @@
     <!-- Custom styles for this template -->
     <link href="css/dashboard.css" rel="stylesheet">
 
-    <script src="js/angular.min.js"></script>
-    <script src="js/angular-sanitize.min.js"></script>
-
+    <script src="js/jquery.min.js "></script>
+    <script src="js/angular.js"></script>
+    <script src="js/angular-route.min.js"></script>
     <script src="js/ui-bootstrap.min.js"></script>
     <script src="js/controller.js"></script>
 </head>
@@ -38,12 +38,12 @@
                     </button>
                     <a class="navbar-brand" href="/pub/">Ohm Sweet Ohm</a>
                 </div>
-                <div id="topbar">
+                <!--<div id="topbar">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="/pub/">Dashboard</a></li>
                         <li><a href="#">Settings</a></li>
                     </ul>
-                </div>
+                </div>-->
             </div>
         </nav>
     </div>
@@ -55,15 +55,15 @@
                 <h3 style="margin-top:0;">Devices</h3>
                 <ul class="nav nav-sidebar">
                     <li data-ng-class="{active:isActive($index)}" data-ng-repeat="device in getDevices()">
-                        <a data-ng-click="select($index)" data-ng-model="device.name">
+                        <a href="{{device.id}}" data-ng-model="device.name">
                             <h4>{{device.name}}</h4>
                             <p>{{device.location}}</p>
+                            {{device.url}}
                         </a>
                     </li>
                 </ul>
             </div>
-            <div data-ng-bind-html="content | trusted" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <h2>Loading...</h2>
+            <div ng-view class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             </div>
         </div>
     </div>
@@ -71,10 +71,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js "></script>
-    <script>
-        window.jQuery || document.write('<script src="/js/jquery.min.js "><\/script>')
-    </script>
+
     <script src="js/bootstrap.min.js "></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/ie10-viewport-bug-workaround.js "></script>
