@@ -24,11 +24,14 @@ app.run(['$q', '$rootScope', '$http', '$urlRouter',
 			$rootScope.devices = data;
 			angular.forEach(data, function(value, key) {
 				var state = value;
-				state["url"] = "^/" + value.id;
-				state["views"] = {
+				state.name = value.name;
+				state.url = "^/" + value.id;
+				state.views = {};
+				state.views["main"] = {
 					name: "main",
 					templateUrl: "devices/" + value.id + "/index.html"
-				}
+				};
+				state.abstract = false;
 				$stateProviderRef.state(value.id, value);
 			});
 			$urlRouter.sync();
@@ -37,7 +40,6 @@ app.run(['$q', '$rootScope', '$http', '$urlRouter',
 }]);
 
 app.controller('getDevices', ['$scope', '$http', '$state', function($scope, $http, $state) {
-	$scope.url = '';
 
 	$scope.getSelected = function() { // Returns the currently selected device.
 		return $scope.devices[$scope.selected];
