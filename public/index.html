@@ -55,15 +55,15 @@
                 <div id="navbar" class="col-sm-3 col-md-2 sidebar collapse" data-ng-controller="getDevices">
                     <h3 style="margin-top:0;">Devices</h3>
                     <ul class="nav nav-sidebar">
-                        <li data-ng-class="{active:isActive($index)}" data-ng-repeat="device in devices">
-                            <a href="#/{{device.id}}" data-ng-model="device.name">
-                                <h4>{{device.name}}</h4>
+                        <li data-ng-class="{active:isActive($index)}" data-ng-repeat="device in $state.get()">
+                            <a href="#/{{device.id}}" data-ng-model="device.title">
+                                <h4>{{device.title}}</h4>
                                 <p>{{device.location}}</p>
                             </a>
                         </li>
                     </ul>
                 </div>
-                <div data-ui-view="main" data-ng-controller="main" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"></div>
+                <div data-ui-view="main" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"></div>
             </div>
         </div>
 

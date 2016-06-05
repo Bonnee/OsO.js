@@ -21,15 +21,19 @@ app.run(['$rootScope', '$state', '$stateParams',
 app.run(['$q', '$rootScope', '$http', '$urlRouter',
   function($q, $rootScope, $http, $urlRouter) {
 		$http.get('/devices').success(function(data) { // Fetches the devices through REST
-			$rootScope.devices = data;
 			angular.forEach(data, function(value, key) {
+				var root = "/pub/devices/" + value.id;
 				var state = value;
-				state.name = value.name;
+				state.title = value.name; // state.name won't set. so I renamed it to title
 				state.url = "^/" + value.id;
+				state.path = function(name) {
+					return root + name;
+				}
 				state.views = {};
 				state.views["main"] = {
 					name: "main",
-					templateUrl: "devices/" + value.id + "/index.html"
+					templateUrl: root + "/index.html",
+					controller: "ctrl"
 				};
 				state.abstract = false;
 				$stateProviderRef.state(value.id, value);
@@ -42,17 +46,11 @@ app.run(['$q', '$rootScope', '$http', '$urlRouter',
 app.controller('getDevices', ['$scope', '$http', '$state', function($scope, $http, $state) {
 
 	$scope.getSelected = function() { // Returns the currently selected device.
-		return $scope.devices[$scope.selected];
-	}
-
-	$scope.select = function(i) { // Changes the selected device
-
-		$scope.selected = i;
-		$state.go($scope.devices[i].name);
+		return $state.$current;
 	}
 
 	$scope.isActive = function(i) {
-		if ($state.$current.id == $scope.devices[i].id)
+		if ($state.$current.id == $state.get()[i].id)
 			return true;
 		return false;
 	}
