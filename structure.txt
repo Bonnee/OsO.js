@@ -1,0 +1,37 @@
+.
+├── app.js
+├── base.js
+├── bin
+│   └── www
+├── devices.js
+├── logo.png
+├── logo.svg
+├── models
+│   └── device.js
+├── package.json
+├── public
+│   ├── css
+│   │   ├── bootstrap.min.css
+│   │   ├── dashboard.css
+│   │   └── style.css
+│   ├── devices
+│   ├── imgs
+│   │   └── favicon.png
+│   ├── index.html
+│   └── js
+│       ├── angular.js
+│       ├── angular.min.js
+│       ├── angular-ui-router.js
+│       ├── bootstrap.min.js
+│       ├── controller.js
+│       ├── ie10-viewport-bug-workaround.js
+│       ├── jquery.min.js
+│       └── ui-bootstrap.min.js
+├── README.md
+├── routes
+│   └── devices.js
+├── structure.txt
+└── views
+    └── error.ejs
+
+9 directories, 25 files
