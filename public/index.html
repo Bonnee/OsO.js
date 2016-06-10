@@ -56,7 +56,7 @@
                     <h3 style="margin-top:0;">Devices</h3>
                     <ul class="nav nav-sidebar">
                         <li data-ng-class="{active:isActive($index)}" data-ng-repeat="device in $state.get()">
-                            <a href="#/{{device.id}}" data-ng-model="device.title">
+                            <a ui-sref="{{device.url}}" data-ng-model="device.title">
                                 <h4>{{device.title}}</h4>
                                 <p>{{device.location}}</p>
                             </a>
