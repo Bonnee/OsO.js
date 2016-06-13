@@ -44,8 +44,6 @@ this.base = function(addr, name) {
 
 		update.$push["data." + type] = data.data;
 
-		console.log(update);
-
 		Devices.findByIdAndUpdate(mac.toLowerCase(), update, {
 			upsert: true,
 			new: true
