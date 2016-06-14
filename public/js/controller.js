@@ -21,14 +21,13 @@ app.run(['$rootScope', '$state', '$stateParams',
 app.run(['$q', '$rootScope', '$http', '$urlRouter',
   function($q, $rootScope, $http, $urlRouter) {
 
-		$stateProviderRef.state("root", {
+		$stateProviderRef.state("/index", {
 			url: "/",
 			title: "Home",
-			abstract: true,
 			views: {
-				"": {
+				"main": {
 					name: "main",
-					templateUrl: "devices/main.html"
+					templateUrl: "/pub/devices/default/index.html"
 				}
 			}
 		});
@@ -40,26 +39,23 @@ app.run(['$q', '$rootScope', '$http', '$urlRouter',
 
 				var root = "/pub/devices/" + state.id;
 				state.url = '/' + state.id.replace(/:/g, '-');
-
 				state.title = state.name; // state.name won't set. so I renamed it to title
 
-				state.path = function(name) {
-					return root + name;
-				}
+				state.path = "root";
+
 				state.views = {};
 				state.views["main"] = {
 					name: "main",
 					templateUrl: root + "/index.html",
 					controller: "dev"
-				};
-				//state.parent = "root"; // Fucks up everything.
+				}
 				state.abstract = false;
 				$stateProviderRef.state(state.url, state);
 			});
 			$urlRouter.sync();
 			$urlRouter.listen();
 		});
-	}]);
+				}]);
 
 app.controller('getDevices', ['$scope', '$http', '$state', function($scope, $http, $state) {
 
