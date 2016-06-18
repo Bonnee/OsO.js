@@ -41,7 +41,7 @@ app.run(['$q', '$rootScope', '$http', '$urlRouter',
 				state.url = '/' + state.id.replace(/:/g, '-');
 				state.title = state.name; // state.name won't set. so I renamed it to title
 
-				state.path = "root";
+				state.path = "/pub/devices/" + state.id + "/";
 
 				state.views = {};
 				state.views["main"] = {

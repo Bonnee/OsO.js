@@ -21,7 +21,7 @@
 
         <script src="js/jquery.min.js "></script>
 
-        <script src="js/angular.js"></script>
+        <script src="js/angular.min.js"></script>
         <script src="js/angular-ui-router.js"></script>
 
         <script src="js/ui-bootstrap.min.js"></script>
@@ -56,7 +56,7 @@
                 <div id="navbar" class="col-sm-3 col-md-2 sidebar collapse" data-ng-controller="getDevices">
                     <h3 style="margin-top:0;">Devices</h3>
                     <ul class="nav nav-sidebar">
-                        <li data-ng-class="{active:isActive($index)}" data-ng-repeat="device in $state.get()" ng-if="device.title">
+                        <li data-ng-class="{active:isActive($index)}" data-ng-repeat="device in $state.get()" ng-if="device.title && device.title!='Home'">
                             <a ui-sref="{{device.url}}" data-ng-model="device.title">
                                 <h4>{{device.title}}</h4>
                                 <p>{{device.location}}</p>
