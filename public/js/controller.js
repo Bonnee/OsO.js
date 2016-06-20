@@ -73,10 +73,16 @@ app.controller('dev', function($scope, $stateParams, $http) {
 	console.log("Selected " + $scope.$parent.$state.current.id);
 	var path = '/devices/' + $scope.$parent.$state.current.id
 
-	$http.get(path).then(function(data) { // Adds device data to scope
-		$scope.data = data.data;
-		$.getScript('/pub' + path + "/script.js", function() {
-			main(data.data, $scope);
+	$scope.refresh = function(callback) {
+		$http.get(path).then(function(data) { // Adds device data to scope
+			callback(JSON.parse(JSON.stringify(data.data)));
 		});
-	})
+	}
+
+	$scope.refresh(function(data) {
+		$scope.data = data
+		$.getScript('/pub' + path + "/script.js", function() {
+			main($scope);
+		});
+	});
 });
