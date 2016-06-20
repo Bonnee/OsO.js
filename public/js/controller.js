@@ -32,14 +32,13 @@ app.run(['$q', '$rootScope', '$http', '$urlRouter',
 			}
 		});
 
-		$http.get('/devices').success(function(data) { // Fetches the devices through REST
+		$http.get('/devices').success(function(data) { // Fetches the devices through REST API
 			angular.forEach(data, function(value, key) {
-
 				var state = value;
 
 				var root = "/pub/devices/" + state.id;
 				state.url = '/' + state.id.replace(/:/g, '-');
-				state.title = state.name; // state.name won't set. so I renamed it to title
+				state.title = state.name; // state.name won't set. Renamed it to title
 
 				state.path = "/pub/devices/" + state.id + "/";
 
@@ -55,8 +54,9 @@ app.run(['$q', '$rootScope', '$http', '$urlRouter',
 			$urlRouter.sync();
 			$urlRouter.listen();
 		});
-				}]);
+	}]);
 
+// Devices list controller
 app.controller('getDevices', ['$scope', '$http', '$state', function($scope, $http, $state) {
 
 	$scope.getSelected = function() { // Returns the currently selected device.
@@ -64,19 +64,16 @@ app.controller('getDevices', ['$scope', '$http', '$state', function($scope, $htt
 	}
 
 	$scope.isActive = function(i) {
-		if ($state.$current.id == $state.get()[i].id)
-			return true;
-		return false;
+		return $state.$current.id == $state.get()[i].id
 	}
-
-	//$scope.select(0); // Select the first tab to display something
 }]);
 
+// Device controller
 app.controller('dev', function($scope, $stateParams, $http) {
-	console.log($scope.$parent.$state.current.id);
+	console.log("Selected " + $scope.$parent.$state.current.id);
 	var path = '/devices/' + $scope.$parent.$state.current.id
 
-	$http.get(path).then(function(data) {
+	$http.get(path).then(function(data) { // Adds device data to scope
 		$scope.data = data.data;
 		$.getScript('/pub' + path + "/script.js", function() {
 			main(data.data, $scope);
